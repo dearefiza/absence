@@ -88,24 +88,6 @@
                 </div>
               <div class="col-lg-4">
                 <div class="mb-3">
-                  <label class="form-label">User</label>
-                  <select name="user_id" class="form-control select2 @error('user_id') is-invalid @enderror">
-                    <option value="" selected>--Pilih User--</option>
-                    @foreach ($users as $user)
-                    <option value="{{$user->id}}" @if($user->id == $student->user_id) selected @endif> {{$user->name}} </option>
-                    @endforeach
-                  </select>
-                  @error('user_id')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-
-              <!-- Input untuk WhatsApp Orang Tua (wa_ortu) -->
-              <div class="col-lg-4">
-                <div class="mb-3">
                   <label class="form-label">WhatsApp Orang Tua</label>
                   <input type="text" name="wa_ortu" value="{{ old('wa_ortu', $student->wa_ortu) }}" class="form-control @error('wa_ortu') is-invalid @enderror" placeholder="Contoh: +6281234567890">
                   @error('wa_ortu')

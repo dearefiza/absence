@@ -105,7 +105,7 @@ class StudentController extends Controller
 
     public function destroy(Student $student)
     {
-        $student->delete();
+        $student->forceDelete();
 
         return redirect()->route('student.index')->with('success', 'Murid berhasil dihapus.');
     }

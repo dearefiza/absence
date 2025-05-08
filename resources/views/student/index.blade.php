@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">WhatsApp Orang Tua <span class="text-danger">*</span></label>
+                    <label class="form-label">WhatsApp Orang Tua (+62)<span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('wa_ortu') is-invalid @enderror" name="wa_ortu" />
                     @error('wa_ortu')
                       <span class="invalid-feedback" role="alert">
@@ -177,7 +177,7 @@
                       <a href="#" class="text-body">{{ $item->class?->code ?? 'Belum Ada Kelas' }}</a>
                     </td>
                     <td>
-                      <a href="#" class="text-body">{{ $item->user?->email ?? 'Belum Ada User' }}</a>
+                      <a href="#" class="text-body">{{ $item->wa_ortu }}</a>
                     </td>
 
                     <td>

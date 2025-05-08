@@ -59,7 +59,7 @@ class AcademicYearController extends Controller
 
     public function destroy(AcademicYear $academicYear)
     {
-        $academicYear->delete();
+        $academicYear->forceDelete();
 
         return redirect()->route('academic-year.index')->with('success', 'Tahun ajaran berhasil dihapus.');
     }
