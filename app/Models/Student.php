@@ -9,12 +9,17 @@ use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'students';
 
-    protected $fillable = ['nisn', 'name', 'image', 'user_id', 'class_id'];
+    protected $fillable = [
+        'nisn',
+        'name',
+        'image',
+        'wa_ortu',
+        'class_id',
+    ];
 
     public function attendances()
     {
@@ -23,23 +28,24 @@ class Student extends Model
 
     public function attendanceForDate($date)
     {
-        return StudentAttendance::query()->where('student_id', $this->id)->where('date', $date)->first();
+        return StudentAttendance::query()
+            ->where('student_id', $this->id)
+            ->where('date', $date)
+            ->first();
     }
 
     public function attendancePerAcademic($id)
     {
-        return StudentAttendance::query()->where('student_id', $this->id)->where('academic_year_id', $id)
+        return StudentAttendance::query()
+            ->where('student_id', $this->id)
+            ->where('academic_year_id', $id)
             ->select('status', DB::raw('count(*) as total'))
-            ->groupBy('status')->get();
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', "id");
+            ->groupBy('status')
+            ->get();
     }
 
     public function class()
     {
-        return $this->belongsTo(ClassModel::class, 'class_id', "id");
+        return $this->belongsTo(ClassModel::class, 'class_id', 'id');
     }
 }

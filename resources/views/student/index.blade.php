@@ -83,14 +83,9 @@
                 </div>
                 <div class="col-lg-4">
                   <div class="mb-3">
-                    <label class="form-label">User</label>
-                    <select name="user_id" class="form-control select2 @error('user_id') is-invalid @enderror">
-                      <option value="" selected>--Pilih User--</option>
-                      @foreach ($users as $user)
-                        <option value="{{ $user->id }}"> {{ $user->name }} </option>
-                      @endforeach
-                    </select>
-                    @error('user_id')
+                    <label class="form-label">WhatsApp Orang Tua <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('wa_ortu') is-invalid @enderror" name="wa_ortu" />
+                    @error('wa_ortu')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>
@@ -156,7 +151,7 @@
                   <th scope="col">Name</th>
                   <th scope="col">NISN</th>
                   <th scope="col">Kelas</th>
-                  <th scope="col">User</th>
+                  <th scope="col">WhatsApp Orang Tua</th>
                   <th scope="col" style="width: 12.5rem;">Action</th>
                 </tr>
               </thead>

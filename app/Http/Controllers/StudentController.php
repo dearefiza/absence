@@ -15,7 +15,6 @@ class StudentController extends Controller
 {
     public function index()
     {
-
         $users = User::all();
         $classes = ClassModel::all();
         $students = Student::all();
@@ -28,7 +27,7 @@ class StudentController extends Controller
             'nisn' => 'required|unique:students,nisn',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string',
-            'user_id' => 'nullable',
+            'wa_ortu' => 'nullable|string|regex:/^\+62\d{9,15}$/', // Validasi nomor WhatsApp dengan awalan +62
             'class_id' => 'required',
         ]);
 
@@ -44,7 +43,7 @@ class StudentController extends Controller
             'nisn' => $request->nisn,
             'image' => $filename,
             'name' => $request->name,
-            'user_id' => $request->user_id,
+            'wa_ortu' => $request->wa_ortu,
             'class_id' => $request->class_id,
         ]);
 
@@ -69,7 +68,7 @@ class StudentController extends Controller
             'nisn' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'nullable|string',
-            'user_id' => 'nullable',
+            'wa_ortu' => 'nullable|string|regex:/^\+62\d{9,15}$/', // Validasi nomor WhatsApp dengan awalan +62
             'class_id' => 'nullable',
         ]);
 
@@ -81,8 +80,6 @@ class StudentController extends Controller
             Storage::putFileAs('public/images', $file, $filename);
         }
 
-        if (intval($request->status) === 1) Student::query()->update(['status' => 0]);
-
         $student->nisn = $request->nisn;
         try {
             DB::beginTransaction();
@@ -93,7 +90,7 @@ class StudentController extends Controller
                 $student->image = $filename;
             }
             $student->name = $request->name;
-            $student->user_id = $request->user_id;
+            $student->wa_ortu = $request->wa_ortu;
             $student->class_id = $request->class_id;
             $student->save();
 
@@ -102,7 +99,6 @@ class StudentController extends Controller
             return redirect()->route('student.index')->with('success', 'Murid berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            // dd($e);
             return redirect()->route('student.index')->with('error', 'Terjadi kesalahan.');
         }
     }
@@ -121,7 +117,6 @@ class StudentController extends Controller
         $pdf->Output();
     }
 
-
     public function import(ImportStudentsRequest $request)
     {
         $file = $request->file('file');
@@ -129,8 +124,8 @@ class StudentController extends Controller
 
         // Check column count
         $header = $data[0];
-        if (count($header) !== 2) {
-            return back()->withErrors(['The CSV must contain exactly 2 columns: nisn, name.']);
+        if (count($header) !== 3) { // Updated to check for 3 columns (nisn, name, wa_ortu)
+            return back()->withErrors(['The CSV must contain exactly 3 columns: nisn, name, wa_ortu.']);
         }
 
         // Remove header
@@ -141,9 +136,11 @@ class StudentController extends Controller
             $validator = Validator::make([
                 'nisn' => $row[0],
                 'name' => $row[1],
+                'wa_ortu' => $row[2],
             ], [
                 'nisn' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
+                'wa_ortu' => 'nullable|string|regex:/^\+62\d{9,15}$/', // Validasi nomor WhatsApp
             ]);
 
             if ($validator->fails()) {
@@ -157,9 +154,11 @@ class StudentController extends Controller
                 'image' => null,
                 'nisn' => $row[0],
                 'name' => $row[1],
+                'wa_ortu' => $row[2], // Insert wa_ortu
+                'class_id' => null, // You can assign a default class if needed
             ]);
         }
 
-        return back()->with('success', 'Berhasil inport murid.');
+        return back()->with('success', 'Berhasil impor murid.');
     }
 }

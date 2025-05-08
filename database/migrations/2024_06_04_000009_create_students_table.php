@@ -18,13 +18,12 @@ class CreateStudentsTable extends Migration
             $table->string('nisn');
             $table->string('name');
             $table->string('image')->nullable();
-            $table->unsignedInteger('user_id')->nullable();
+            $table->string('wa_ortu')->nullable();
             $table->unsignedInteger('class_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('class_id')->references('id')->on('classes');
         });
     }
