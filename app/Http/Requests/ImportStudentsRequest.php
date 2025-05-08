@@ -24,7 +24,7 @@ class ImportStudentsRequest extends FormRequest
         'nisn' => 'required|string|max:255',
         'name' => 'required|string|max:255',
         'image' => 'nullable|image',
-        'wa_ortu' => ['nullable', 'regex:/^08[1-9][0-9]{7,10}$/'],
+        'wa_ortu' => ['nullable', 'regex:/^+62[1-9][0-9]{7,10}$/'],
         'class_id' => 'nullable|exists:classes,id',
     ];
 }
