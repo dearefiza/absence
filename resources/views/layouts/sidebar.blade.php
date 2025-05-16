@@ -66,8 +66,6 @@
         <li><a href="/user" class="waves-effect"><i class="uil-user"></i><span>Akun User</span></a></li>
         @endif
         @if (auth()->user()->hasAccess(['student_attendance_ById' => 'read']))
-        <li class="menu-title">Menu Wali Murid</li>
-        <li><a href="/report-attendance-token" class="waves-effect"><i class="uil-history"></i><span>Rekap Kehadiran</span></a></li>
         @endif
       </ul>
     </div>

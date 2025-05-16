@@ -49,7 +49,7 @@ class ClassController extends Controller
 
     public function destroy(ClassModel $class)
     {
-        $class->forceDelete();
+        $class->delete();
 
         return redirect()->route('class.index')->with('success', 'Kelas berhasil dihapus.');
     }
